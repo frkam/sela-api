@@ -1617,7 +1617,7 @@ paths:
   /leagues/{slug}/best-players:
     get:
       tags:
-        - tournaments
+        - leagues
       parameters:
         - $ref: "#/components/parameters/slug"
         - $ref: "#/components/parameters/limit"
@@ -1630,7 +1630,7 @@ paths:
   /leagues/{slug}/best-players/roles:
     get:
       tags:
-        - tournaments
+        - leagues
       parameters:
         - $ref: "#/components/parameters/slug"
       responses:
