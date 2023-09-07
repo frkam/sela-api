@@ -180,6 +180,30 @@ paths:
                           format: Youtube embed url
         404:
           description: Not found
+  /teams/{slug}/best-players:
+    get:
+      tags:
+        - teams
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - $ref: "#/components/parameters/role"
+        - $ref: "#/components/parameters/limit"
+      responses:
+        200:
+          $ref: "#/components/responses/BestPlayersSuccess"
+        404:
+          $ref: "#/components/responses/BestPlayersNotFound"
+  /teams/{slug}/best-players/roles:
+    get:
+      tags:
+        - teams
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      responses:
+        200:
+          $ref: "#/components/responses/BestPlayersRolesSucess"
+        404:
+          $ref: "#/components/responses/BestPlayersRolesNotFound"
   /players/{slug}:
     get:
       tags:
@@ -1360,6 +1384,8 @@ paths:
                         $ref: "#/components/schemas/cup"
                       silver:
                         $ref: "#/components/schemas/cup"
+        404:
+          description: Not found
   /tournaments/{slug}/schedule:
     get:
       tags:
@@ -1395,6 +1421,8 @@ paths:
                   rules:
                     type: string
                     format: url
+        404:
+          description: Not found
   /tournaments/{slug}/schedule/{year}:
     get:
       tags:
@@ -1414,18 +1442,18 @@ paths:
               schema:
                 type: object
                 properties:
-                  games: 
+                  games:
                     type: array
                     items:
                       type: object
                       properties:
-                        title: 
+                        title:
                           type: string
                           example: Плей-офф
                         games:
                           type: object
                           properties:
-                            title: 
+                            title:
                               type: string
                               example: Золотой кубок Финал (состоялся)
                             games:
@@ -1435,7 +1463,7 @@ paths:
                     items:
                       type: object
                       properties:
-                        group: 
+                        group:
                           type: string
                         teams:
                           type: array
@@ -1474,64 +1502,142 @@ paths:
                         photo:
                           type: string
                           format: url
-                        
-  /best-players/{slug}:
+                  stats:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      youngestPlayer:
+                        type: number
+                      oldestPlayer:
+                        type: number
+                      teams:
+                        type: number
+                      players:
+                        type: number
+                      games:
+                        type: number
+                  gallery:
+                    type: object
+                    properties:
+                      images:
+                        type: array
+                        items:
+                          type: string
+                          format: url
+                      videos:
+                        type: array
+                        items:
+                          type: string
+                          format: url
+        404:
+          description: Not found
+  /tournaments/{slug}/best-players:
     get:
       tags:
-        - best-players
+        - tournaments
       parameters:
         - $ref: "#/components/parameters/slug"
-        - in: query
-          name: role
-          schema:
-            type: string
-          example: Бомбардир
         - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/role"
       responses:
         200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    place:
-                      type: number
-                    name:
-                      type: string
-                    photo:
-                      type: string
-                      format: url
-                    goals:
-                      type: number
-                    slug:
-                      type: string
+          $ref: "#/components/responses/BestPlayersSuccess"
         404:
-          description: Not found
-  /best-players/{slug}/roles:
+          $ref: "#/components/responses/BestPlayersNotFound"
+  /tournaments/{slug}/best-players/roles:
     get:
       tags:
-        - best-players
+        - tournaments
       parameters:
         - $ref: "#/components/parameters/slug"
       responses:
         200:
+          $ref: "#/components/responses/BestPlayersRolesSucess"
+        404:
+          $ref: "#/components/responses/BestPlayersRolesNotFound"
+  /tournaments/{slug}/standings/{year}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - $ref: "#/components/parameters/year"
+      tags:
+        - tournaments
+      responses:
+        200:
           description: Success
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    text:
-                      type: string
-                    value:
-                      type: string
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        group:
+                          type: string
+                        results:
+                          type: object
+                          properties:
+                            place:
+                              type: number
+                            name:
+                              type: string
+                            score:
+                              type: array
+                              items:
+                                type: string
+                                example: 1st - ["", "1:0", "1:0", "4:0"], 2nd - ["1:0", "", "1:0", "4:0"], 3rd - ["1:0", "1:0", "", "4:0"], 4th
+                            totalScore:
+                              type: string
+                              example: "6-1"
+                            points:
+                              type: number
+                  brackets:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: ПЛЕЙ-ОФФ
+                        brackets:
+                          type: object
+                          properties:
+                            goldenCup:
+                              $ref: "#/components/schemas/brackets"
+                            silverCup:
+                              $ref: "#/components/schemas/brackets"
+                                
         404:
           description: Not found
+
+  /leagues/{slug}/best-players:
+    get:
+      tags:
+        - tournaments
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/role"
+      responses:
+        200:
+          $ref: "#/components/responses/BestPlayersSuccess"
+        404:
+          $ref: "#/components/responses/BestPlayersNotFound"
+  /leagues/{slug}/best-players/roles:
+    get:
+      tags:
+        - tournaments
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      responses:
+        200:
+          $ref: "#/components/responses/BestPlayersRolesSucess"
+        404:
+          $ref: "#/components/responses/BestPlayersRolesNotFound"
 components:
   schemas:
     games:
@@ -1543,7 +1649,13 @@ components:
             type: string
           games:
             type: object
+            required:
+              - date
+              - teams
+              - title
             properties:
+              title:
+                type: string
               date:
                 type: string
                 format: ISO date
@@ -1551,6 +1663,9 @@ components:
                 type: string
               leagueSlug:
                 type: string
+              youtubeLink:
+                type: string
+                format: Youtube embed url
               teams:
                 type: object
                 properties:
@@ -1578,7 +1693,45 @@ components:
                       logo:
                         type: string
                         format: url
-
+    brackets:
+      example: https://pastebin.com/Ur2Ghknq
+      type: array
+      items:
+        type: array
+        description: for example, we have brackets for 8 teams. 1st arr.length should be 8, 2nd -> 4, 3rd -> 2, 4rd -> 1
+        items:
+          type: object
+          required:
+            - header
+          properties:
+            stage:
+              type: string
+            teams:
+              type: object
+              properties:
+                first: 
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    logo:
+                      type: string
+                    slug:
+                      type: string
+                second: 
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    logo:
+                      type: string
+                    slug:
+                      type: string
+            date:
+              type: string
+              format: ISO date
+            field: 
+              type: string
     cup:
       type: array
       items:
@@ -1778,6 +1931,18 @@ components:
         type: string
       required: true
       example: "slug-slug-2023213-slug"
+    role:
+      in: query
+      name: role
+      schema:
+        type: string
+      example: Бомбардир
+    year:
+      in: path
+      name: year
+      required: true
+      schema:
+        type: number
   responses:
     ValidationError:
       description: Validation error. Only form fields will be parsed on frontend
@@ -1793,3 +1958,40 @@ components:
                 example:
                   email: email is not the correct email
                   name: name not defined
+    BestPlayersSuccess:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                place:
+                  type: number
+                name:
+                  type: string
+                photo:
+                  type: string
+                  format: url
+                goals:
+                  type: number
+                slug:
+                  type: string
+    BestPlayersNotFound:
+      description: Not found
+    BestPlayersRolesSucess:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                text:
+                  type: string
+                value:
+                  type: string
+    BestPlayersRolesNotFound:
+      description: Not found
