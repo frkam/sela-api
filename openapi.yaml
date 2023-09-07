@@ -1,0 +1,1795 @@
+openapi: 3.0.0
+info:
+  title: SELA Client API
+  version: 0.0.1
+
+paths:
+  /teams/{slug}/rent-field:
+    post:
+      tags:
+        - teams
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - phone
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                  format: phone
+      responses:
+        200:
+          description: Success
+        422:
+          $ref: "#/components/responses/ValidationError"
+  /teams/{slug}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      tags:
+        - teams
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - name
+                  - photo
+                  - website
+                  - stats
+                  - games
+                  - team
+                  - gallery
+                properties:
+                  name:
+                    type: string
+                  photo:
+                    type: string
+                    format: url
+                  website:
+                    type: string
+                    format: url
+                  stats:
+                    type: object
+                    properties:
+                      main:
+                        type: object
+                        properties:
+                          kindOfSport:
+                            type: string
+                          foundationDate:
+                            type: string
+                            format: ISO date
+                          coach:
+                            type: string
+                          captain:
+                            type: string
+                      currentSeason:
+                        type: object
+                        properties:
+                          gamesPlayed:
+                            type: number
+                          percentOfWins:
+                            type: number
+                            example: 0.8
+                          wins:
+                            type: number
+                          defeats:
+                            type: number
+                          draws:
+                            type: number
+                          goals:
+                            type: number
+                      allTime:
+                        type: object
+                        properties:
+                          players:
+                            type: number
+                          averageAge:
+                            type: number
+                          gamesPlayed:
+                            type: number
+                          percentOfWins:
+                            type: number
+                            example: 0.8
+                          percentOfDefeats:
+                            type: number
+                            example: 0.5
+                          goals:
+                            type: number
+                          penalties:
+                            type: number
+                          yellowCards:
+                            type: number
+                          redCards:
+                            type: number
+                  defaultEvent:
+                    type: string
+                    description: slug
+                  events:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        slug:
+                          type: string
+                        text:
+                          type: string
+                          example: Кубок Олега Романцева
+                  games:
+                    $ref: "#/components/schemas/games"
+                  cups:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                            - silver
+                            - golden
+                        leagueSlug:
+                          type: string
+                  team:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        photo:
+                          type: string
+                        games:
+                          type: number
+                        goals:
+                          type: number
+                        passes:
+                          type: number
+                        age:
+                          type: number
+                        name:
+                          type: string
+                        role:
+                          type: string
+                        slug:
+                          type: string
+                  gallery:
+                    type: object
+                    properties:
+                      images:
+                        type: array
+                        items:
+                          type: string
+                          format: url
+                      videos:
+                        type: array
+                        items:
+                          type: string
+                          format: Youtube embed url
+        404:
+          description: Not found
+  /players/{slug}:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - fullname
+                  - photo
+                  - stats
+                  - career
+                  - gallery
+                  - games
+                properties:
+                  fullname:
+                    type: string
+                  photo:
+                    type: string
+                  stats:
+                    type: object
+                    required:
+                      - main
+                      - currentSeason
+                      - allTime
+                    properties:
+                      main:
+                        type: object
+                        properties:
+                          team:
+                            type: string
+                          role:
+                            type: string
+                          kindOfSport:
+                            type: string
+                          dateOfBirth:
+                            type: string
+                            format: ISO date
+                      currentSeason:
+                        type: object
+                        properties:
+                          played:
+                            type: number
+                          percentOfWins:
+                            type: number
+                            example: 0.8
+                          wins:
+                            type: number
+                          defeats:
+                            type: number
+                          draws:
+                            type: number
+                          goals:
+                            type: number
+                      allTime:
+                        type: object
+                        properties:
+                          seasonsPlayed:
+                            type: number
+                          gamesPlayed:
+                            type: number
+                          percentOfWins:
+                            type: number
+                            example: 0.8
+                          percentOfDefeats:
+                            type: number
+                            example: 0.8
+                          ballRotations:
+                            type: number
+                          goals:
+                            type: number
+                          penalties:
+                            type: number
+                          yellowCards:
+                            type: number
+                          redCards:
+                            type: number
+                  career:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        team:
+                          type: string
+                        slug:
+                          type: string
+                        logo:
+                          type: string
+                          format: url
+                        season:
+                          type: string
+                        games:
+                          type: number
+                        wins:
+                          type: number
+                        defeats:
+                          type: number
+                        goals:
+                          type: number
+                        passes:
+                          type: number
+                        yellowCards:
+                          type: number
+                        redCards:
+                          type: number
+                  gallery:
+                    type: object
+                    properties:
+                      images:
+                        type: array
+                        items:
+                          type: string
+                          format: url
+                      videos:
+                        type: array
+                        items:
+                          type: string
+                          format: Youtube embed url
+                  games:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        games:
+                          type: object
+                          properties:
+                            date:
+                              type: string
+                              format: ISO date
+                            gameSlug:
+                              type: string
+                            leagueSlug:
+                              type: string
+                            teams:
+                              type: object
+                              properties:
+                                first:
+                                  type: object
+                                  properties:
+                                    place:
+                                      type: number
+                                    score:
+                                      type: number
+                                    name:
+                                      type: string
+                                    logo:
+                                      type: string
+                                      format: url
+                                second:
+                                  type: object
+                                  properties:
+                                    place:
+                                      type: number
+                                    score:
+                                      type: number
+                                    name:
+                                      type: string
+                                    logo:
+                                      type: string
+                                      format: url
+                        stats:
+                          type: object
+                          properties:
+                            goals:
+                              type: number
+                            redCards:
+                              type: number
+                            yellowCards:
+                              type: number
+                            passes:
+                              type: number
+        404:
+          description: Not found
+  /players/{slug}/doctor-consultation:
+    post:
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - phone
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                  format: phone
+      tags:
+        - players
+      responses:
+        200:
+          description: Success
+        422:
+          $ref: "#/components/responses/ValidationError"
+  /players/{slug}/pick-up-sport-food:
+    post:
+      tags:
+        - players
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - phone
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                  format: phone
+      responses:
+        200:
+          description: Success
+        422:
+          $ref: "#/components/responses/ValidationError"
+  /coaches:
+    get:
+      tags:
+        - coaches
+      summary: Returns list of coaches
+      parameters:
+        - $ref: "#/components/parameters/limit"
+        - in: query
+          name: qualification
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: city
+          required: false
+          schema:
+            type: string
+        - in: query
+          required: false
+          name: kind-of-sport
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    photo:
+                      type: string
+                      example: "http://..."
+                    fullname:
+                      type: string
+                      example: "Константин Константинович"
+                    slug:
+                      type: string
+                      example: "konstantin-konstantinovich-slug"
+                    age:
+                      type: number
+                      example: 40
+                    workExperience:
+                      type: number
+                      example: 20
+        404:
+          description: Not found
+  /coaches/filters:
+    get:
+      tags:
+        - coaches
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  kindOfSport:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/filterItem"
+                  city:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/filterItem"
+        404:
+          description: Not found
+  /coaches/{slug}:
+    get:
+      summary: Return object with Coach properties
+      tags:
+        - coaches
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      responses:
+        200:
+          description: JSON Object with coach params
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Coach"
+        404:
+          description: Not found
+  /coaches/{slug}/select-coach:
+    post:
+      tags:
+        - coaches
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+      responses:
+        200:
+          description: Success
+  /coaches/become-coach:
+    post:
+      tags:
+        - coaches
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                  format: phone
+      responses:
+        200:
+          description: Success
+        422:
+          $ref: "#/components/responses/ValidationError"
+  /search:
+    get:
+      summary: Search across all entities
+      tags:
+        - "Search"
+      parameters:
+        - in: query
+          name: term
+          required: true
+          schema:
+            type: string
+          description: Search term
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: number
+          description: Page number
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: number
+          description: Search results limit
+      responses:
+        200:
+          description: JSON array of entities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SearchResult"
+        404:
+          description: No results found for this query
+  /contacts/address:
+    get:
+      summary: Returns
+      tags:
+        - "contacts"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - lng
+                  - lat
+                  - title
+                properties:
+                  lng:
+                    type: number
+                  lat:
+                    type: number
+                  title:
+                    type: string
+  /contacts:
+    get:
+      summary: Returns phone and email
+      tags:
+        - "contacts"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - email
+                  - phone
+                properties:
+                  email:
+                    type: string
+                    format: email
+                  phone:
+                    type: string
+                    format: phone
+  /contacts/order-call:
+    post:
+      summary: Order call
+      tags:
+        - "contacts"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - phone
+                - email
+              properties:
+                name:
+                  type: string
+                phone:
+                  type: string
+                  format: tel
+                email:
+                  type: string
+                  format: email
+      responses:
+        200:
+          description: Success
+        422:
+          $ref: "#/components/responses/ValidationError"
+  /uniform/order:
+    post:
+      summary: Order form
+      tags:
+        - uniform
+      requestBody:
+        description: Colors from checkboxes and logo files returns as `color1`, `color2`, `color3` and `logo1` `logo2`
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: true
+              required:
+                - brand
+                - kindOfSport
+                - name
+                - phone
+                - comment
+                - colorsCount
+                - logosCount
+              properties:
+                brand:
+                  type: string
+                color:
+                  type: string
+                colorsCount:
+                  type: number
+                kindOfSport:
+                  type: string
+                name:
+                  type: string
+                phone:
+                  type: string
+                  format: phone
+                comment:
+                  type: string
+                logosCount:
+                  type: number
+            encoding:
+              logo:
+                contentType: image/svg image/ai image/eps
+      responses:
+        200:
+          description: Success
+        422:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                uniqueItems: true
+                additionalProperties: true
+                example:
+                  email: email is not the correct email
+                  name: name not defined
+  /rent:
+    get:
+      summary: Get object of fields for rent
+      tags:
+        - "Rent"
+      parameters:
+        - $ref: "#/components/parameters/city"
+        - $ref: "#/components/parameters/kind-of-sport"
+        - $ref: "#/components/parameters/limit"
+        - in: query
+          name: date
+          schema:
+            type: string
+          required: false
+          example: 2023-09-03
+        - in: query
+          name: type
+          schema:
+            type: string
+          required: false
+          example: halls, arenas, stadiums
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - kindOfSport
+                    - fieldPhotos
+                    - title
+                    - price
+                    - properties
+                    - slug
+                  properties:
+                    kindOfSport:
+                      type: string
+                    fieldPhotos:
+                      type: array
+                      items:
+                        type: string
+                        format: url
+                    title:
+                      type: string
+                    price:
+                      type: string
+                      example: 2000₽
+                    properties:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                        metro:
+                          type: string
+                        travelTime:
+                          type: string
+                    slug:
+                      type: string
+        404:
+          description: Not found
+  /rent/filters:
+    get:
+      summary: Get filters
+      tags:
+        - "Rent"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                required:
+                  - city
+                  - kindOfSport
+                  - type
+                type: object
+                properties:
+                  city:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/filterItem"
+                  kindOfSport:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/filterItem"
+                  type:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/filterItem"
+        404:
+          description: Not found
+  /rent/{slug}:
+    get:
+      summary: Returns field object
+      tags:
+        - Rent
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - images
+                  - properties
+                  - description
+                  - title
+                  - price
+                properties:
+                  images:
+                    type: array
+                    items:
+                      type: string
+                  properties:
+                    type: object
+                    properties:
+                      address:
+                        type: string
+                      metro:
+                        type: string
+                      travelTime:
+                        type: number
+                  description:
+                    type: object
+                    properties:
+                      size:
+                        type: string
+                      qualification:
+                        type: boolean
+                      changingRooms:
+                        type: number
+                      coverage:
+                        type: string
+                        example: Искусст. Газон
+                  price:
+                    type: string
+                  title:
+                    type: string
+        404:
+          description: Not found
+  /rent/{slug}/book:
+    get:
+      summary: Returns available time and dates for rent
+      tags:
+        - Rent
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - title
+                  - availableTime
+                  - unavailableDays
+                properties:
+                  title:
+                    type: string
+                  availableTime:
+                    type: array
+                    description: Array of strins like 08:00, 08:30 ...
+                    items:
+                      type: string
+                  unavailableDays:
+                    type: array
+                    items:
+                      type: string
+                      format: ISO string
+                    description: Array of dates
+        404:
+          description: Not found
+    post:
+      summary: Rent a field
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - timeFrom
+                - timeTo
+                - name
+                - phone
+                - email
+              properties:
+                timeFrom:
+                  type: string
+                timeTo:
+                  type: string
+                dates:
+                  type: array
+                  items:
+                    type: string
+                    format: ISO
+                date:
+                  type: string
+                name:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                  format: email
+      tags:
+        - Rent
+      responses:
+        200:
+          description: Success
+        422:
+          $ref: "#/components/responses/ValidationError"
+  /rent/{slug}/book/price:
+    get:
+      tags:
+        - rent
+      summary: Returns rental price
+      parameters:
+        - in: query
+          name: date
+          required: true
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/date"
+              - $ref: "#/components/schemas/dates"
+        - in: query
+          name: timeFrom
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: timeTo
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  price:
+                    type: string
+        404:
+          description: Not found
+  /about/services:
+    get:
+      tags:
+        - about
+      summary: Returns services for about page
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - title
+                    - images
+                  properties:
+                    title:
+                      type: string
+                    images:
+                      type: array
+                      items:
+                        type: string
+        404:
+          description: Not found
+  /about/team:
+    get:
+      tags:
+        - about
+      description: Returns team
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workEmail:
+                    type: string
+                    format: email
+                  team:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - fullname
+                        - job
+                        - phone
+                      properties:
+                        fullname:
+                          type: string
+                        job:
+                          type: string
+                        phone:
+                          type: string
+        404:
+          description: Not found
+  /about/vacancies:
+    get:
+      tags:
+        - about
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - title
+                    - salary
+                  properties:
+                    title:
+                      type: string
+                    salary:
+                      type: string
+                    url:
+                      type: string
+  /report-not-found:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                comment:
+                  type: string
+                url:
+                  type: string
+                  format: url
+      responses:
+        200:
+          description: Success
+  /olympics/video:
+    get:
+      tags:
+        - olympics
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  video:
+                    type: string
+                    description: Youtube embed url
+        404:
+          description: Not found
+  /olympics/services:
+    get:
+      tags:
+        - olympics
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    photos:
+                      type: array
+                      items:
+                        type: string
+                        format: url
+  /olympics/organize-event:
+    post:
+      tags:
+        - olympics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                  format: phone
+      responses:
+        200:
+          description: Success
+        422:
+          $ref: "#/components/responses/ValidationError"
+  /email-subscribe:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+      responses:
+        200:
+          description: Success
+        422:
+          $ref: "#/components/responses/ValidationError"
+  /tournaments:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/limit"
+      tags:
+        - tournaments
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - slug
+                    - kindOfSport
+                    - image
+                    - properties
+                    - title
+                  properties:
+                    slug:
+                      type: string
+                    kindOfSport:
+                      type: string
+                    image:
+                      type: string
+                      format: url
+                    properties:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          format: ISO date
+                        address:
+                          type: string
+                    title:
+                      type: string
+        404:
+          description: Not found
+  /tournaments/filters:
+    get:
+      tags:
+        - tournaments
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - city
+                  - kindOfSport
+                properties:
+                  city:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/filterItem"
+                  kindOfSport:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/filterItem"
+  /tournaments/{slug}:
+    get:
+      tags:
+        - tournaments
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  images:
+                    type: array
+                    items:
+                      type: string
+                      format: url
+                  date:
+                    type: string
+                    description: ISO date with time
+                  placesRemain:
+                    type: number
+                  price:
+                    type: string
+                  tournamentRules:
+                    type: string
+                    format: url
+                  presentation:
+                    type: string
+                    format: url
+                  advantages:
+                    type: array
+                    items:
+                      type: string
+                  description:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      text:
+                        type: string
+                        description: Each paragraph should be divided with <br /> tag
+                  program:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        time:
+                          type: string
+                          example: 09:00
+                        event:
+                          type: string
+                  address:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      lat:
+                        type: string
+                      lng:
+                        type: string
+                  includedInPrice:
+                    type: array
+                    items:
+                      type: string
+                  media:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          format: ISO
+                        title:
+                          type: string
+                  partners:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        logo:
+                          type: string
+                        href:
+                          type: string
+                          format: url
+        404:
+          description: Not found
+  /tournaments/{slug}/participate:
+    post:
+      tags:
+        - tournaments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                  format: phone
+      responses:
+        200:
+          description: Success
+  /tournaments/{slug}/history:
+    get:
+      tags:
+        - tournaments
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  photos:
+                    type: array
+                    items:
+                      type: string
+                      format: url
+                  report:
+                    type: string
+                    format: url
+                  stats:
+                    type: object
+                    properties:
+                      tournamentNumber:
+                        type: number
+                      duration:
+                        type: number
+                      teams:
+                        type: number
+                      participants:
+                        type: number
+                  cups:
+                    type: object
+                    properties:
+                      golden:
+                        $ref: "#/components/schemas/cup"
+                      silver:
+                        $ref: "#/components/schemas/cup"
+  /tournaments/{slug}/schedule:
+    get:
+      tags:
+        - tournaments
+      parameters:
+        - in: query
+          name: year
+          schema:
+            type: number
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  teams:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        slug:
+                          type: string
+                        logo:
+                          type: string
+                  years:
+                    type: array
+                    items:
+                      type: number
+                  rules:
+                    type: string
+                    format: url
+  /tournaments/{slug}/schedule/{year}:
+    get:
+      tags:
+        - tournaments
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - in: path
+          name: year
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  games: 
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title: 
+                          type: string
+                          example: Плей-офф
+                        games:
+                          type: object
+                          properties:
+                            title: 
+                              type: string
+                              example: Золотой кубок Финал (состоялся)
+                            games:
+                              $ref: "#/components/schemas/games"
+                  rating:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        group: 
+                          type: string
+                        teams:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              place:
+                                type: number
+                              name:
+                                type: string
+                              logo:
+                                type: string
+                                format: url
+                              games:
+                                type: number
+                              goals:
+                                type: number
+                              slug:
+                                type: string
+                  violations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        team:
+                          type: string
+                        slug:
+                          type: string
+                          description: player slug
+                        redCards:
+                          type: number
+                        yellowCards:
+                          type: number
+                        photo:
+                          type: string
+                          format: url
+                        
+  /best-players/{slug}:
+    get:
+      tags:
+        - best-players
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - in: query
+          name: role
+          schema:
+            type: string
+          example: Бомбардир
+        - $ref: "#/components/parameters/limit"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    place:
+                      type: number
+                    name:
+                      type: string
+                    photo:
+                      type: string
+                      format: url
+                    goals:
+                      type: number
+                    slug:
+                      type: string
+        404:
+          description: Not found
+  /best-players/{slug}/roles:
+    get:
+      tags:
+        - best-players
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                    value:
+                      type: string
+        404:
+          description: Not found
+components:
+  schemas:
+    games:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          games:
+            type: object
+            properties:
+              date:
+                type: string
+                format: ISO date
+              gameSlug:
+                type: string
+              leagueSlug:
+                type: string
+              teams:
+                type: object
+                properties:
+                  first:
+                    type: object
+                    properties:
+                      place:
+                        type: number
+                      score:
+                        type: number
+                      name:
+                        type: string
+                      logo:
+                        type: string
+                        format: url
+                  second:
+                    type: object
+                    properties:
+                      place:
+                        type: number
+                      score:
+                        type: number
+                      name:
+                        type: string
+                      logo:
+                        type: string
+                        format: url
+
+    cup:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          logo:
+            type: string
+            format: url
+          slug:
+            type: string
+          place:
+            type: number
+    Team:
+      type: object
+      properties:
+        website:
+          type: string
+        stats:
+          type: object
+          properties:
+            main:
+              type: object
+              properties:
+                kindOfSport:
+                  type: string
+                foundationDate:
+                  type: string
+                coach:
+                  type: string
+                captain:
+                  type: string
+            currentSeason:
+              type: object
+              properties:
+                played:
+                  type: number
+                percentOfWins:
+                  type: number
+                wins:
+                  type: number
+                defeats:
+                  type: number
+                draws:
+                  type: number
+                goals:
+                  type: number
+            allTime:
+              type: object
+              properties:
+                players:
+                  type: number
+                averageAge:
+                  type: number
+                played:
+                  type: number
+                percentOfWins:
+                  type: number
+                percentOfDefeats:
+                  type: number
+                goals:
+                  type: number
+                penalties:
+                  type: number
+                yellowCards:
+                  type: number
+                redCards:
+                  type: number
+        games:
+          type: array
+        gallery:
+          type: object
+          properties:
+            photos:
+              type: array
+              items:
+                type: string
+            videos:
+              type: array
+              items:
+                type: string
+        team:
+          type: array
+          items:
+            type: object
+            properties:
+              photo:
+                type: string
+              fullname:
+                type: string
+              role:
+                type: string
+              stats:
+                type: object
+                properties:
+                  goals:
+                    type: number
+                  games:
+                    type: number
+                  age:
+                    type: number
+                  passes:
+                    type: number
+    dates:
+      type: array
+      items:
+        type: string
+        format: Date
+        example: date=2019-07-21
+    date:
+      type: string
+    SearchResult:
+      type: object
+      required:
+        - type
+        - title
+        - description
+        - slug
+      properties:
+        type:
+          type: string
+          enum:
+            - coach
+            - player
+            - team
+            - tournament
+            - league
+            - rent
+        title:
+          type: string
+          example: Футбольный манеж CityFootball Сокольники
+        description:
+          type: string
+          example: ул. Орджоникидзе, 11 стр 8
+        slug:
+          type: string
+    Coach:
+      type: object
+      properties:
+        photo:
+          type: string
+        fullname:
+          type: string
+        biography:
+          type: string
+        price:
+          type: string
+          description: Price should contain currency symbol
+          example: "5000₽"
+        age:
+          type: number
+        hasQualification:
+          type: boolean
+        kindOfSport:
+          type: string
+          example: "Волейбол"
+        workExperience:
+          type: number
+        youtubeLink:
+          type: string
+          required:
+            - ""
+    filterItem:
+      type: object
+      properties:
+        value:
+          type: string
+        text:
+          type: string
+  parameters:
+    limit:
+      in: query
+      name: limit
+      schema:
+        type: number
+      required: false
+      example: 10
+    city:
+      in: query
+      name: city
+      schema:
+        type: string
+      required: false
+      example: Moscow
+    kind-of-sport:
+      in: query
+      name: kind-of-sport
+      schema:
+        type: string
+      required: false
+      example: football
+    slug:
+      in: path
+      name: slug
+      schema:
+        type: string
+      required: true
+      example: "slug-slug-2023213-slug"
+  responses:
+    ValidationError:
+      description: Validation error. Only form fields will be parsed on frontend
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              fields:
+                type: array
+                uniqueItems: true
+                additionalProperties: true
+                example:
+                  email: email is not the correct email
+                  name: name not defined
