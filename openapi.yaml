@@ -557,6 +557,12 @@ paths:
                 type: array
                 items:
                   type: object
+                  required:
+                    - photo
+                    - fullname
+                    - slug
+                    - age
+                    - workExperience
                   properties:
                     photo:
                       type: string
@@ -586,6 +592,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - kindOfSport
+                  - city
                 properties:
                   kindOfSport:
                     type: array
@@ -624,6 +633,10 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - name
+                - email
+                - phone
               properties:
                 name:
                   type: string
@@ -643,6 +656,10 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - name
+                - email
+                - phone
               properties:
                 name:
                   type: string
@@ -1066,6 +1083,8 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - price
                 properties:
                   price:
                     type: string
@@ -1109,6 +1128,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - workEmail
+                  - team
                 properties:
                   workEmail:
                     type: string
@@ -1146,6 +1168,7 @@ paths:
                   required:
                     - title
                     - salary
+                    - url
                   properties:
                     title:
                       type: string
@@ -1182,6 +1205,8 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - video
                 properties:
                   video:
                     type: string
@@ -1201,6 +1226,9 @@ paths:
                 type: array
                 items:
                   type: object
+                  required:
+                    - title
+                    - photos
                   properties:
                     title:
                       type: string
@@ -1218,6 +1246,10 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - name
+                - email
+                - phone
               properties:
                 name:
                   type: string
@@ -1326,6 +1358,21 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - title
+                  - images
+                  - date
+                  - placesRemain
+                  - price
+                  - tournamentRules
+                  - presentation
+                  - advantages
+                  - description
+                  - program
+                  - address
+                  - includedInPrice
+                  - media
+                  - partners
                 properties:
                   title:
                     type: string
@@ -1413,6 +1460,10 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - name
+                - email
+                - phone
               properties:
                 name:
                   type: string
@@ -1440,6 +1491,12 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - title
+                  - photos
+                  - report
+                  - stats
+                  - cups
                 properties:
                   title:
                     type: string
@@ -1487,6 +1544,11 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - title
+                  - teams
+                  - years
+                  - rules
                 properties:
                   title:
                     type: string
@@ -1526,6 +1588,12 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - games
+                  - rating
+                  - violations
+                  - stats
+                  - gallery
                 properties:
                   games:
                     type: array
@@ -1655,6 +1723,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - results
+                  - brackets
                 properties:
                   results:
                     type: array
@@ -1716,6 +1787,14 @@ paths:
                 type: array
                 items:
                   type: object
+                  required:
+                    - "kindOfSport"
+                    - image
+                    - slug
+                    - properties
+                    - title
+                    - stats
+                    - teams
                   properties:
                     kindOfSport:
                       type: string
@@ -1771,6 +1850,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - city
+                  - kindOfSport
                 properties:
                   city:
                     type: array
@@ -1793,6 +1875,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - title
+                  - teams
                 properties:
                   title:
                     type: string
@@ -1834,6 +1919,7 @@ paths:
                 type: object
                 required:
                   - games
+                  - hasGames
                 properties:
                   hasGames:
                     type: boolean
@@ -1939,6 +2025,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - results
+                  - brackets
                 properties:
                   results:
                     description: https://pastebin.com/ZSLkTE3f
@@ -1994,6 +2083,10 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - name
+                - email
+                - phone
               properties:
                 name:
                   type: string
@@ -2019,6 +2112,10 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - title
+                  - leagueImage
+                  - news
                 properties:
                   title:
                     type: string
@@ -2050,6 +2147,12 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - title
+                  - gameTitle
+                  - teams
+                  - games
+                  - links
                 properties:
                   title:
                     type: string
@@ -2108,6 +2211,8 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - stream
                 properties:
                   stream:
                     type: string
@@ -2128,6 +2233,8 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - videos
                 properties:
                   videos:
                     type: array
@@ -2150,6 +2257,8 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - photos
                 properties:
                   photos:
                     type: array
@@ -2172,6 +2281,8 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - gameCourse
                 properties:
                   gameCourse:
                     type: object
@@ -2183,8 +2294,24 @@ paths:
                           type: object
                           additionalProperties:
                             type: object
+                            required:
+                              - first
+                              - second
                             properties:
                               first:
+                                type: object
+                                properties:
+                                  event:
+                                    type: object
+                                    properties:
+                                      text:
+                                        type: string
+                                      player:
+                                        type: string
+                                  score:
+                                    type: string
+                                    example: "0:1"
+                              second:
                                 type: object
                                 properties:
                                   event:
@@ -2214,9 +2341,14 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - stats
                 properties:
                   stats:
                     type: object
+                    required:
+                      - stats
+                      - bestPlayers
                     properties:
                       stats:
                         type: array
@@ -2231,6 +2363,9 @@ paths:
                               type: string
                       bestPlayers:
                         type: object
+                        required:
+                          - first
+                          - second
                         properties:
                           first:
                             type: object
@@ -2304,41 +2439,38 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - info
+                  - players
                 properties:
+                  players:
+                    type: object
+                    properties:
+                      photo:
+                        type: string
+                        format: url
+                      name:
+                        type: string
+                      role:
+                        type: string
+                      slug:
+                        type: string
                   info:
                     type: object
                     properties:
-                      first:
-                        type: object
-                        properties:
-                          players:
-                            type: object
-                            properties:
-                              photo:
-                                type: string
-                                format: url
-                              name:
-                                type: string
-                              role:
-                                type: string
-                              slug:
-                                type: string
-                          info:
+                      title:
+                        type: string
+                        items:
+                          type: array
+                          items:
                             type: object
                             properties:
                               title:
                                 type: string
+                              values:
+                                type: array
                                 items:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      title:
-                                        type: string
-                                      values:
-                                        type: array
-                                        items:
-                                          type: string
+                                  type: string
 
         404:
           description: Not found
@@ -2356,6 +2488,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - role
+                  - time
                 properties:
                   role:
                     type: array
