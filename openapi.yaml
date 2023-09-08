@@ -4,6 +4,42 @@ info:
   version: 0.0.1
 
 paths:
+  /teams:
+    get:
+      tags:
+        - teams
+      parameters:
+        - $ref: "#/components/parameters/city"
+        - $ref: "#/components/parameters/kind-of-sport"
+        - $ref: "#/components/parameters/is-tournament-held"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - photo
+                    - logo
+                    - slug
+                    - name
+                  properties:
+                    photo:
+                      type: string
+                      format: url
+                    logo:
+                      type: string
+                      format: url
+                    slug:
+                      type: string
+                    name:
+                      type: string
+
+        404:
+          description: Not found
   /teams/{slug}/rent-field:
     post:
       tags:
@@ -204,6 +240,53 @@ paths:
           $ref: "#/components/responses/BestPlayersRolesSucess"
         404:
           $ref: "#/components/responses/BestPlayersRolesNotFound"
+  /players:
+    get:
+      tags:
+        - players
+      parameters:
+        - $ref: "#/components/parameters/city"
+        - $ref: "#/components/parameters/kind-of-sport"
+        - $ref: "#/components/parameters/is-tournament-held"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - photo
+                    - games
+                    - goals
+                    - passes
+                    - age
+                    - name
+                    - role
+                    - slug
+                  properties:
+                    photo:
+                      type: string
+                      format: url
+                    games:
+                      type: number
+                    goals:
+                      type: number
+                    passes:
+                      type: number
+                    age:
+                      type: number
+                    name:
+                      type: string
+                    role:
+                      type: string
+                    slug:
+                      type: string
+
+        404:
+          description: Not found
   /players/{slug}:
     get:
       tags:
@@ -1342,6 +1425,8 @@ paths:
       responses:
         200:
           description: Success
+        422:
+          $ref: "#/components/responses/ValidationError"
   /tournaments/{slug}/history:
     get:
       tags:
@@ -1613,7 +1698,316 @@ paths:
 
         404:
           description: Not found
+  /leagues:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/city"
+        - $ref: "#/components/parameters/kind-of-sport"
+        - $ref: "#/components/parameters/is-tournament-held"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    kindOfSport:
+                      type: string
+                    image:
+                      type: string
+                      format: url
+                    slug:
+                      type: string
+                    properties:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                        date:
+                          type: string
+                          format: ISO date
+                    title:
+                      type: string
+                    stats:
+                      type: object
+                      properties:
+                        teams:
+                          type: number
+                        games:
+                          type: number
+                        players:
+                          type: number
+                    teams:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          place:
+                            type: number
+                          score:
+                            type: number
+                          name:
+                            type: string
+                          logo:
+                            type: string
+                            format: url
 
+        404:
+          description: Not found
+  /leagues/filters:
+    get:
+      tags:
+        - leagues
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  city:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/filterItem"
+                  kindOfSport:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/filterItem"
+  /leagues/{slug}:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  teams:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        slug:
+                          type: string
+                        logo:
+                          type: string
+                          format: url
+                        rules:
+                          type: string
+                          format: url
+                        years:
+                          type: array
+                          items:
+                            type: string
+        404:
+          description: Not found
+  /leagues/{slug}/{year}:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - in: query
+          name: year
+          schema:
+            type: number
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - games
+                properties:
+                  hasGames:
+                    type: boolean
+                  games:
+                    type: array
+                    description: If there have been no games in the league yet games should contain placeholder data
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: Золотой кубок Финал (состоялся)
+                        games:
+                          $ref: "#/components/schemas/games"
+                  rating:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        group:
+                          type: string
+                        teams:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              place:
+                                type: number
+                              name:
+                                type: string
+                              logo:
+                                type: string
+                                format: url
+                              games:
+                                type: number
+                              goals:
+                                type: number
+                              slug:
+                                type: string
+                  violations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        team:
+                          type: string
+                        slug:
+                          type: string
+                          description: player slug
+                        redCards:
+                          type: number
+                        yellowCards:
+                          type: number
+                        photo:
+                          type: string
+                          format: url
+                  stats:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      youngestPlayer:
+                        type: number
+                      oldestPlayer:
+                        type: number
+                      teams:
+                        type: number
+                      players:
+                        type: number
+                      games:
+                        type: number
+                  gallery:
+                    type: object
+                    properties:
+                      images:
+                        type: array
+                        items:
+                          type: string
+                          format: url
+                      videos:
+                        type: array
+                        items:
+                          type: string
+                          format: url
+        404:
+          description: Not found
+  /leagues/{slug}/standings/{year}:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - in: query
+          name: year
+          schema:
+            type: number
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    description: https://pastebin.com/ZSLkTE3f
+                    type: object
+                    properties:
+                      teams:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            place:
+                              type: number
+                            name:
+                              type: string
+                            score:
+                              type: string
+                              description: see example at https://pastebin.com/ZSLkTE3f
+                            games:
+                              type: number
+                            wins:
+                              type: number
+                            draws:
+                              type: number
+                            defeats:
+                              type: number
+                            totalScore:
+                              type: string
+                            points:
+                              type: number
+                  brackets:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: ПЛЕЙ-ОФФ
+                        brackets:
+                          type: object
+                          properties:
+                            goldenCup:
+                              $ref: "#/components/schemas/brackets"
+                            silverCup:
+                              $ref: "#/components/schemas/brackets"
+        404:
+          description: Not found
+  /league/{slug}/participate:
+    post:
+      tags:
+        - leagues
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                  format: phone
+      responses:
+        200:
+          description: Success
+        422:
+          $ref: "#/components/responses/ValidationError"
   /leagues/{slug}/news:
     get:
       tags:
@@ -1642,7 +2036,7 @@ paths:
                           type: string
                         text:
                           type: string
-  /leagues/{slug}/{game-slug}:
+  /leagues/{slug}/game/{game-slug}:
     get:
       tags:
         - leagues
@@ -1700,7 +2094,7 @@ paths:
                       format: url
         404:
           description: Not found
-  /leagues/{slug}/{game-slug}/stream:
+  /leagues/{slug}/game/{game-slug}/stream:
     get:
       tags:
         - leagues
@@ -1720,7 +2114,7 @@ paths:
                     format: Youtube embed url
         404:
           description: Not found
-  /leagues/{slug}/{game-slug}/videos:
+  /leagues/{slug}/game/{game-slug}/videos:
     get:
       tags:
         - leagues
@@ -1742,7 +2136,7 @@ paths:
                       format: Youtube embed url
         404:
           description: Not found
-  /leagues/{slug}/{game-slug}/photos:
+  /leagues/{slug}/game/{game-slug}/photos:
     get:
       tags:
         - leagues
@@ -1764,7 +2158,7 @@ paths:
                       format: Youtube embed url
         404:
           description: Not found
-  /leagues/{slug}/{game-slug}/game-course:
+  /leagues/{slug}/game/{game-slug}/game-course:
     get:
       tags:
         - leagues
@@ -1806,7 +2200,7 @@ paths:
 
         404:
           description: Not found
-  /leagues/{slug}/{game-slug}/stats:
+  /leagues/{slug}/game/{game-slug}/stats:
     get:
       tags:
         - leagues
@@ -1883,7 +2277,7 @@ paths:
 
         404:
           description: Not found
-  /leagues/{slug}/{game-slug}/protocol/{team-slug}:
+  /leagues/{slug}/game/{game-slug}/protocol/{team-slug}:
     get:
       tags:
         - leagues
@@ -1948,7 +2342,7 @@ paths:
 
         404:
           description: Not found
-  /leagues/{slug}/{game-slug}/protocol/filters:
+  /leagues/{slug}/game/{game-slug}/protocol/filters:
     get:
       tags:
         - leagues
@@ -1974,7 +2368,6 @@ paths:
 
         404:
           description: Not Found
-
   /leagues/{slug}/best-players:
     get:
       tags:
@@ -2310,6 +2703,14 @@ components:
         type: string
       name: game-slug
       required: true
+    is-tournament-held:
+      in: query
+      schema:
+        type: string
+        enum:
+          - true
+          - false
+      name: is-tournaments-held
   responses:
     ValidationError:
       description: Validation error. Only form fields will be parsed on frontend
