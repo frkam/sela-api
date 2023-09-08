@@ -842,7 +842,7 @@ paths:
     get:
       summary: Get object of fields for rent
       tags:
-        - "Rent"
+        - "rent"
       parameters:
         - $ref: "#/components/parameters/city"
         - $ref: "#/components/parameters/kind-of-sport"
@@ -870,7 +870,7 @@ paths:
                   type: object
                   required:
                     - kindOfSport
-                    - fieldPhotos
+                    - photos
                     - title
                     - price
                     - properties
@@ -878,7 +878,7 @@ paths:
                   properties:
                     kindOfSport:
                       type: string
-                    fieldPhotos:
+                    photos:
                       type: array
                       items:
                         type: string
@@ -905,7 +905,7 @@ paths:
     get:
       summary: Get filters
       tags:
-        - "Rent"
+        - "rent"
       responses:
         200:
           description: Success
@@ -936,7 +936,7 @@ paths:
     get:
       summary: Returns field object
       tags:
-        - Rent
+        - rent
       responses:
         200:
           description: Success
@@ -945,13 +945,13 @@ paths:
               schema:
                 type: object
                 required:
-                  - images
+                  - photos
                   - properties
                   - description
                   - title
                   - price
                 properties:
-                  images:
+                  photos:
                     type: array
                     items:
                       type: string
@@ -986,7 +986,7 @@ paths:
     get:
       summary: Returns available time and dates for rent
       tags:
-        - Rent
+        - rent
       responses:
         200:
           description: Success
@@ -1015,7 +1015,7 @@ paths:
         404:
           description: Not found
     post:
-      summary: Rent a field
+      summary: rent a field
       requestBody:
         content:
           application/json:
@@ -1047,7 +1047,7 @@ paths:
                   type: string
                   format: email
       tags:
-        - Rent
+        - rent
       responses:
         200:
           description: Success
