@@ -207,7 +207,7 @@ paths:
   /players/{slug}:
     get:
       tags:
-        - leagues
+        - players
       parameters:
         - $ref: "#/components/parameters/slug"
       responses:
@@ -1610,9 +1610,370 @@ paths:
                               $ref: "#/components/schemas/brackets"
                             silverCup:
                               $ref: "#/components/schemas/brackets"
-                                
+
         404:
           description: Not found
+
+  /leagues/{slug}/news:
+    get:
+      tags:
+        - leagues
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  leagueImage:
+                    type: string
+                  news:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          format: ISO date
+                        header:
+                          type: string
+                        text:
+                          type: string
+  /leagues/{slug}/{game-slug}:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - $ref: "#/components/parameters/game-slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  gameTitle:
+                    type: string
+                  teams:
+                    type: object
+                    properties:
+                      first:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          slug:
+                            type: string
+                          logo:
+                            type: string
+                            format: url
+                          points:
+                            type: number
+                      second:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          slug:
+                            type: string
+                          logo:
+                            type: string
+                            format: url
+                          points:
+                            type: number
+                  games:
+                    type: array
+                    items:
+                      type: string
+                      example: "0:1"
+                  links:
+                    type: array
+                    items:
+                      type: string
+                      format: url
+        404:
+          description: Not found
+  /leagues/{slug}/{game-slug}/stream:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - $ref: "#/components/parameters/game-slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stream:
+                    type: string
+                    format: Youtube embed url
+        404:
+          description: Not found
+  /leagues/{slug}/{game-slug}/videos:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - $ref: "#/components/parameters/game-slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  videos:
+                    type: array
+                    items:
+                      type: string
+                      format: Youtube embed url
+        404:
+          description: Not found
+  /leagues/{slug}/{game-slug}/photos:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - $ref: "#/components/parameters/game-slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  photos:
+                    type: array
+                    items:
+                      type: string
+                      format: Youtube embed url
+        404:
+          description: Not found
+  /leagues/{slug}/{game-slug}/game-course:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - $ref: "#/components/parameters/game-slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gameCourse:
+                    type: object
+                    description: https://pastebin.com/P7ZxrB2C
+                    properties:
+                      parts:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties:
+                            type: object
+                            properties:
+                              first:
+                                type: object
+                                properties:
+                                  event:
+                                    type: object
+                                    properties:
+                                      text:
+                                        type: string
+                                      player:
+                                        type: string
+                                  score:
+                                    type: string
+                                    example: "0:1"
+
+        404:
+          description: Not found
+  /leagues/{slug}/{game-slug}/stats:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - $ref: "#/components/parameters/game-slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stats:
+                    type: object
+                    properties:
+                      stats:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            title:
+                              type: string
+                            firstTeam:
+                              type: string
+                            secondTeam:
+                              type: string
+                      bestPlayers:
+                        type: object
+                        properties:
+                          first:
+                            type: object
+                            properties:
+                              slug:
+                                type: string
+                              photo:
+                                type: string
+                                format: url
+                              name:
+                                type: string
+                              role:
+                                type: string
+                              stats:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    title:
+                                      type: string
+                                    value:
+                                      type: number
+                          second:
+                            type: object
+                            properties:
+                              slug:
+                                type: string
+                              photo:
+                                type: string
+                                format: url
+                              name:
+                                type: string
+                              role:
+                                type: string
+                              stats:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    title:
+                                      type: string
+                                    value:
+                                      type: number
+
+        404:
+          description: Not found
+  /leagues/{slug}/{game-slug}/protocol/{team-slug}:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - $ref: "#/components/parameters/game-slug"
+        - in: path
+          name: team-slug
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: time
+          schema:
+            type: string
+        - in: query
+          name: role
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  info:
+                    type: object
+                    properties:
+                      first:
+                        type: object
+                        properties:
+                          players:
+                            type: object
+                            properties:
+                              photo:
+                                type: string
+                                format: url
+                              name:
+                                type: string
+                              role:
+                                type: string
+                              slug:
+                                type: string
+                          info:
+                            type: object
+                            properties:
+                              title:
+                                type: string
+                                items:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      title:
+                                        type: string
+                                      values:
+                                        type: array
+                                        items:
+                                          type: string
+
+        404:
+          description: Not found
+  /leagues/{slug}/{game-slug}/protocol/filters:
+    get:
+      tags:
+        - leagues
+      parameters:
+        - $ref: "#/components/parameters/slug"
+        - $ref: "#/components/parameters/game-slug"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/filterItem"
+                  time:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/filterItem"
+
+        404:
+          description: Not Found
 
   /leagues/{slug}/best-players:
     get:
@@ -1694,7 +2055,7 @@ components:
                         type: string
                         format: url
     brackets:
-      example: https://pastebin.com/Ur2Ghknq
+      description: https://pastebin.com/Ur2Ghknq
       type: array
       items:
         type: array
@@ -1709,7 +2070,7 @@ components:
             teams:
               type: object
               properties:
-                first: 
+                first:
                   type: object
                   properties:
                     name:
@@ -1718,7 +2079,7 @@ components:
                       type: string
                     slug:
                       type: string
-                second: 
+                second:
                   type: object
                   properties:
                     name:
@@ -1730,7 +2091,7 @@ components:
             date:
               type: string
               format: ISO date
-            field: 
+            field:
               type: string
     cup:
       type: array
@@ -1943,6 +2304,12 @@ components:
       required: true
       schema:
         type: number
+    game-slug:
+      in: path
+      schema:
+        type: string
+      name: game-slug
+      required: true
   responses:
     ValidationError:
       description: Validation error. Only form fields will be parsed on frontend
