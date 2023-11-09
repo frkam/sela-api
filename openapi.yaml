@@ -976,6 +976,9 @@ paths:
                       coverage:
                         type: string
                         example: Искусст. Газон
+                      text:
+                        type: string
+                        example: "У нас большая база стадионов и спортивных залов"
                   price:
                     type: string
                   title:
