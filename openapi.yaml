@@ -10,8 +10,8 @@ paths:
         - teams
       parameters:
         - $ref: "#/components/parameters/city"
-        - $ref: "#/components/parameters/kind-of-sport"
-        - $ref: "#/components/parameters/is-tournament-held"
+        - $ref: "#/components/parameters/kindOfSport"
+        - $ref: "#/components/parameters/isTournamentHeld"
       responses:
         200:
           description: Success
@@ -246,8 +246,8 @@ paths:
         - players
       parameters:
         - $ref: "#/components/parameters/city"
-        - $ref: "#/components/parameters/kind-of-sport"
-        - $ref: "#/components/parameters/is-tournament-held"
+        - $ref: "#/components/parameters/kindOfSport"
+        - $ref: "#/components/parameters/isTournamentHeld"
       responses:
         200:
           description: Success
@@ -545,7 +545,7 @@ paths:
             type: string
         - in: query
           required: false
-          name: kind-of-sport
+          name: kindOfSport
           schema:
             type: string
       responses:
@@ -845,7 +845,7 @@ paths:
         - "rent"
       parameters:
         - $ref: "#/components/parameters/city"
-        - $ref: "#/components/parameters/kind-of-sport"
+        - $ref: "#/components/parameters/kindOfSport"
         - $ref: "#/components/parameters/limit"
         - in: query
           name: date
@@ -1776,8 +1776,8 @@ paths:
       parameters:
         - $ref: "#/components/parameters/limit"
         - $ref: "#/components/parameters/city"
-        - $ref: "#/components/parameters/kind-of-sport"
-        - $ref: "#/components/parameters/is-tournament-held"
+        - $ref: "#/components/parameters/kindOfSport"
+        - $ref: "#/components/parameters/isTournamentHeld"
       responses:
         200:
           description: Success
@@ -2806,9 +2806,9 @@ components:
         type: string
       required: false
       example: Moscow
-    kind-of-sport:
+    kindOfSport:
       in: query
-      name: kind-of-sport
+      name: kindOfSport
       schema:
         type: string
       required: false
@@ -2838,14 +2838,14 @@ components:
         type: string
       name: game-slug
       required: true
-    is-tournament-held:
+    isTournamentHeld:
       in: query
       schema:
         type: string
         enum:
           - true
           - false
-      name: is-tournaments-held
+      name: isTournamentHeld
   responses:
     ValidationError:
       description: Validation error. Only form fields will be parsed on frontend
