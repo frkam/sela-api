@@ -1063,7 +1063,7 @@ paths:
       summary: Returns rental price
       parameters:
         - in: query
-          name: date
+          name: date[]
           required: true
           schema:
             oneOf:
